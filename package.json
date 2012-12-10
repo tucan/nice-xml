@@ -1,9 +1,10 @@
 {
 	"name": "xml-objects",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"keywords": [
 		"xml",
-		"converter"
+		"converter",
+		"parser"
 	],
 	"author": {
 		"name": "Vladimir Andreev",
@@ -14,6 +15,7 @@
 		"url": "https://github.com/tucan/xml-objects.git"
 	},
 	"dependencies": {
-		"xml-writer": ">=1.2"
+		"xml-writer": ">=1.2",
+		"node-expat": ">=2.0"
 	}
 }

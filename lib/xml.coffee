@@ -8,6 +8,7 @@
 
 # Required modules
 
+expat = require('node-expat')
 XMLWriter = require('xml-writer')
 
 # XML converver
@@ -17,35 +18,56 @@ XML =
 
 	parse: (string) ->
 
-	# Stringifies data to XML
+	# Stringifies provided data to XML
 
-	stringify: (data) ->
-		writer = new XMLWriter()
+	stringify: (data) -> @stringifyObject(data)
+	
+	#
 
-		writer.startDocument()
+	stringifyAny: (value, key) ->
+		result = []
 
-		@stringifyObject(data, writer)
+		# If value is array
 
-		writer.endDocument()
+		if Array.isArray(value)
+			result.push(@stringifyArray(value, key))
 
-		writer.toString()
+		# If value is undefined of null
 
-	stringifyAny: (data, writer) ->
+		else unless value?
+			result.push('<' + key + '/>')
 
-	stringifyObject: (data, writer) ->
-		for key, value of data
+		# Otherwise
+
+		else
+			result.push('<' + key + '>')
+			
 			switch typeof value
-				when 'string' then writer.writeElement(key, value)
-				when 'number', 'boolean' then writer.writeElement(key, String(value))
-				when 'object'
-					if Array.isArray(value)
-						@stringifyArray(key, value, writer)
-					else
-						writer.startElement(key)
-						@stringifyObject(value, writer)
-						writer.endElement()
+				when 'string' then result.push(value)
+				when 'number', 'boolean' then result.push(String(value))
+				when 'object' then result.push(@stringifyObject(value))
+			
+			result.push('<' + key + '/>')
 
-		@
+		result.join('')
+
+	#
+
+	stringifyArray: (data, key) ->
+		result = []
+
+		result.push(@stringifyAny(value, key)) for value in data
+
+		result.join('')
+
+	#
+
+	stringifyObject: (data) ->
+		result = []
+
+		result.push(@stringifyAny(value, key)) for key, value of data
+
+		result.join('')
 
 # Exported objects
 
