@@ -8,5 +8,6 @@
 
 # Exported objects
 
-exports.XML = require('./lib/xml.coffee')
-exports.Loader = require('./lib/loader.coffee')
+exports.Serializer = require('./lib/serializer')
+exports.XML = require('./lib/xml')
+exports.Loader = require('./lib/loader')
