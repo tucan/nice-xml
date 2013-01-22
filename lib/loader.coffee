@@ -8,25 +8,21 @@
 
 # XML loader
 
-class Loader
+Loader =
 	# Handler for XML-files
 
-	@handler: (module, b, c) ->
-		module.exports = '12345'
+	handler: (module) ->
+		module.exports = test: true
 
 		undefined
 
 	# Registers handler for XML-files
 
-	@register: () ->
+	register: () ->
 		require.extensions['.xml'] = @handler
 
 		undefined
 
-	# Disabled object constructor
-
-	constructor: () -> throw new Error('Can\'t create instance of static class')
-
 # Exported objects
 
-exports = module.exports = Loader
+module.exports = Loader

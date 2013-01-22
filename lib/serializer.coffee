@@ -9,7 +9,7 @@
 # XML serializer
 
 class Serializer
-	#
+	# Object constructor
 
 	constructor: (@data) ->
 
@@ -28,7 +28,29 @@ class Serializer
 
 		@
 
-	#
+	# array -> elements
+
+	stringifyArray: (key, data) ->
+		@stringifyAny(key, value) for value in data
+
+		@
+
+	# object -> attributes
+	
+	#writeAttributes: () ->
+
+	# object -> elements
+
+	stringifyObject: (data) ->
+		@stringifyAny(key, value) for key, value of data when key[0] isnt '$' and value?
+
+		@
+
+	# key and value -> attribute
+
+	#writeAttribute: () ->
+	
+	# key and value -> element(s)
 
 	stringifyAny: (key, value) ->
 		# Try to get primitive value
@@ -42,20 +64,6 @@ class Serializer
 		# Otherwise
 
 		else @writeElement(key, value)
-
-		@
-
-	#
-
-	stringifyObject: (data) ->
-		@stringifyAny(key, value) for key, value of data when value?
-
-		@
-
-	#
-
-	stringifyArray: (key, data) ->
-		@stringifyAny(key, value) for value in data
 
 		@
 
