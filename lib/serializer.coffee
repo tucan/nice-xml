@@ -15,51 +15,47 @@ class Serializer
 
 	#
 
-	stringifyAny: (data, key) ->
-		# If data is array
+	inspect: () -> @toString()
 
-		if Array.isArray(data)
-			@stringifyArray(data, key)
+	#
 
-		# If data is undefined of null
+	writeElement: (key, value) ->
+		@buffer.push("<#{key}>")
 
-		else unless data?
-			@buffer.push('<' + key + '/>')
+		if typeof value is 'object' then @stringifyObject(value) else @buffer.push(value)
 
-		# Otherwise
-
-		else
-			switch typeof data
-				when 'string' then @buffer.push('<' + key + '>', data)
-				when 'number', 'boolean' then @buffer.push('<' + key + '>', String(data))
-				when 'object'
-					@buffer.push('<' + key)
-					@stringifyAttributes(data.$)
-					@buffer.push('>')
-					@stringifyObject(data)
-			
-			@buffer.push('</' + key + '>')
+		@buffer.push("</#{key}>")
 
 		@
 
 	#
 
-	stringifyArray: (data, key) ->
-		@stringifyAny(value, key) for value in data
+	stringifyAny: (key, value) ->
+		# Try to get primitive value
+
+		value = value.valueOf() if typeof value is 'object'
+
+		# If value is array
+
+		if Array.isArray(value) then @stringifyArray(key, value)
+
+		# Otherwise
+
+		else @writeElement(key, value)
 
 		@
 
 	#
 
 	stringifyObject: (data) ->
-		@stringifyAny(value, key) for key, value of data when key isnt '$'
+		@stringifyAny(key, value) for key, value of data when value?
 
 		@
 
 	#
 
-	stringifyAttributes: (data) ->
-		@buffer.push(' ' + key + '="' + value + '"') for key, value of data
+	stringifyArray: (key, data) ->
+		@stringifyAny(key, value) for value in data
 
 		@
 
