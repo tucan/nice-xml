@@ -8,7 +8,7 @@
 
 # Required modules
 
-Serializer = require('./serializer')
+Standard = require('./standard')
 
 # XML converver
 
@@ -19,7 +19,7 @@ XML =
 
 	# Stringifies provided data to XML
 
-	stringify: (data) -> new Serializer(data).toString()
+	stringify: (data) -> new Standard(data).toString()
 
 # Exported objects
 

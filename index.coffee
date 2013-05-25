@@ -9,5 +9,6 @@
 # Exported objects
 
 exports.Serializer = require('./lib/serializer')
+exports.Standard = require('./lib/standard')
 exports.XML = require('./lib/xml')
 exports.Loader = require('./lib/loader')
