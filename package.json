@@ -11,6 +11,7 @@
 		"name": "Vladimir Andreev",
 		"email": "volodya@netfolder.ru"
 	},
+	"main": "lib/index.js",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/tucan/xml-objects.git"

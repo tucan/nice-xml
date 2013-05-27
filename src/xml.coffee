@@ -1,6 +1,6 @@
-# XML converter
+# JSON like interface for XML converter
 #
-# December, 2012 year
+# May, 2013 year
 #
 # Author - Vladimir Andreev
 #
@@ -15,11 +15,15 @@ Standard = require('./standard')
 XML =
 	# Parses given string to native data types
 
-	parse: (string) ->
+	parse: (string, reviver) ->
 
-	# Stringifies provided data to XML
+	# Serializes provided data to XML
 
-	stringify: (data) -> new Standard(data).toString()
+	stringify: (data, replacer, space) -> new Standard(data).toString()
+
+# Makes XML object similar to JSON one
+
+Object.defineProperties(XML, parse: (enumerable: false), stringify: (enumerable: false))
 
 # Exported objects
 

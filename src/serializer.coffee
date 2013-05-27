@@ -23,12 +23,16 @@ class Serializer
 	# Writes element to current position
 
 	writeElement: (key, value) ->
-		@buffer.push('<' + key + '>')
-
 		value = value.valueOf() if typeof value is 'object'
-		if typeof value is 'object' then @stringifyObject(value) else @buffer.push(value)
+		
+		if typeof value is 'object'
+			@buffer.push('<', key, '>')
 
-		@buffer.push('</' + key + '>')
+			@stringifyObject(value)
+
+			@buffer.push('</', key, '>')
+		else
+			@buffer.push('<' + key + '>', value, '</' + key + '>')
 
 		@
 
