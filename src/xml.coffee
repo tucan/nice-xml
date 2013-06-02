@@ -8,14 +8,15 @@
 
 # Required modules
 
-Standard = require('./standard')
+Reader = require('./reader')
+Writer = require('./writer')
 
 # XML converver
 
 XML =
 	# Parses given string to native data types
 
-	parse: (string, reviver) ->
+	parse: (text, reviver) ->
 
 	# Serializes provided data to XML
 

@@ -2,16 +2,11 @@
 	"name": "xml-objects",
 	"version": "0.1.0",
 	"description": "XML to JS native objects bidirectional converver",
-	"keywords": [
-		"xml",
-		"converter",
-		"parser"
-	],
+	"keywords": ["xml", "converter", "parser"],
 	"author": {
 		"name": "Vladimir Andreev",
 		"email": "volodya@netfolder.ru"
 	},
-	"main": "lib/index.js",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/tucan/xml-objects.git"
@@ -21,5 +16,6 @@
 	},
 	"scripts": {
 		"prepublish": "coffee -c -b -o lib src"
-	}
+	},
+	"main": "./lib/index"
 }
