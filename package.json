@@ -1,8 +1,9 @@
 {
-	"name": "xml-objects",
-	"version": "0.1.0",
+	"name": "nice-xml",
+	"version": "0.1.0-alpha",
 	"description": "XML to JS native objects bidirectional converver",
 	"keywords": ["xml", "converter", "parser"],
+	"license": "MIT",
 	"author": {
 		"name": "Vladimir Andreev",
 		"email": "volodya@netfolder.ru"
@@ -15,7 +16,7 @@
 		"coffee-script": "1.x"
 	},
 	"scripts": {
-		"prepublish": "coffee -c -b -o lib src"
+		"prepublish": "./node_modules/.bin/coffee -c -b -o lib src"
 	},
 	"main": "./lib/index"
 }
