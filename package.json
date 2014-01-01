@@ -3,6 +3,7 @@
 	"version": "0.1.0-alpha",
 	"description": "XML to JS native objects bidirectional converver",
 	"keywords": ["xml", "converter", "parser"],
+	"main": "./lib/index",
 	"license": "MIT",
 	"author": {
 		"name": "Vladimir Andreev",
@@ -10,13 +11,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/tucan/xml-objects.git"
+		"url": "https://github.com/tucan/nice-xml.git"
 	},
 	"devDependencies": {
 		"coffee-script": "1.x"
 	},
 	"scripts": {
 		"prepublish": "./node_modules/.bin/coffee -c -b -o lib src"
-	},
-	"main": "./lib/index"
+	}
 }
