@@ -1,10 +1,4 @@
-# XML serializer
-#
-# December, 2012 year
-#
-# Author - Vladimir Andreev
-#
-# E-Mail: volodya@netfolder.ru
+# Copyright Vladimir Andreev
 
 # Required modules
 
@@ -15,46 +9,66 @@ Writer = require('./writer')
 class Serializer
 	#
 
-	constructor: () ->
-		@writer = new Writer()
+	constructor: (spaces) ->
+		@_writer = new Writer()
 
-	#
+	# Processes array or array like objects
 
-	stringifyPrimitive: (key, value) ->
-		@writer.startElement(key)
+	_processArray: (key, data) ->
+		for value in data
+			continue if value is undefined or typeof value is 'function'
 
-		value = value.valueOf() if typeof value is 'object'
-		if typeof value is 'object' then @stringifyObject(value) else @writer.pushText(value)
-
-		@writer.endElement(key)
-
-		@
-
-	# Serializes array of items
-
-	stringifyArray: (key, data) ->
-		@stringifyAny(key, value) for value in data
+			if Array.isArray(value)
+				@_processArray(key, value)
+			else
+				@_processNonArray(key, value)
 
 		@
 
-	# object -> elements
+	# Processes objects
 
-	stringifyObject: (data) ->
-		@stringifyAny(key, value) for key, value of data when key[0] isnt '$' and value?
+	_processObject: (data) ->
+		for key, value of data when key isnt '$'
+			continue if value is undefined or typeof value is 'function'
+
+			if Array.isArray(value)
+				@_processArray(key, value)
+			else
+				@_processNonArray(key, value)
 
 		@
 
 	# key and value -> element(s)
 
-	stringifyAny: (key, value) ->
-		if Array.isArray(value) then @stringifyArray(key, value) else @stringifyPrimitive(key, value)
+	_processNonArray: (key, value) ->
+		# Try to unwrap object
+
+		value = value.valueOf() if value isnt null and typeof value is 'object'
+
+		# This key represents regular element
+
+		unless key[0] is '$'
+			# For any simple type or null
+
+			if value is null or typeof value isnt 'object'
+				@_writer.pushElement(key, value)
+
+			# For any composite type
+
+			else
+				@_writer.startElement(key)
+
+				@_writer.pushAttribute(key1, value1) for key1, value1 of value.$
+
+				@_processObject(value)
+				@_writer.endElement(key)
 
 		@
 
-	run: (data) ->
-		@stringifyObject(data)
+	process: (data) ->
+		@_processObject(data)
 
-		@writer.buffer.join('')
+		@_writer.buffer.join('')
 
 # Exported objects
 
