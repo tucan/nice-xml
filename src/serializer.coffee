@@ -1,9 +1,8 @@
 # Copyright Vladimir Andreev
 
-# TODO
-#
-# Tag names and attr names checks
-# Text and attr values escaping
+# Required modules
+
+Writer = require('./writer')
 
 # XML serializer
 
@@ -13,10 +12,17 @@ class Serializer
 	constructor: (replacer, space) ->
 		@_buffer = null
 
-	# Processes object
+	# Serializes object into elements
 
 	_processObject: (data) ->
 		@_processAny(key, value) for key, value of data when key isnt '$'
+
+		@
+
+	# Serializes object into attributes
+
+	_processAttrObject: (data) ->
+		@_writer.pushAttribute(key, value) for key, value of data
 
 		@
 
@@ -27,6 +33,41 @@ class Serializer
 
 		@
 
+	# Processes key-value pair with regular key
+
+	_processRegular: (key, value) ->
+		# For null or simple type value
+
+		if value is null or typeof value isnt 'object'
+			@_writer.pushElement(key, value)
+
+		# For any composite type
+
+		else
+			@_writer.startElement(key)
+
+			@_processAttrObject(value.$)
+			@_processObject(value)
+
+			@_writer.endElement(key)
+
+		@
+
+	# Processes key-value pair with special key
+
+	_processSpecial: (key, value) ->
+		switch key
+			when '$text'
+				@_writer.pushText(value)
+			when '$section'
+				@_writer.pushSection(value)
+			when '$comment'
+				@_writer.pushComment(value)
+			else
+				throw new Error('Unknown special key: ' + key)
+
+		@
+
 	# Processes any non-array type
 
 	_processNonArray: (key, value) ->
@@ -34,39 +75,15 @@ class Serializer
 
 		value = value.valueOf() if value isnt null and typeof value is 'object'
 
-		# Key represents regular element
+		# Key corresponds to element
 
 		unless key[0] is '$'
-			# For null value
+			@_processRegular(key, value)
 
-			if value is null
-				@_buffer.push('<', key, '/>')
+		# Key corresponds to Text, CDS, Comment or PI
 
-			# For any simple value
-
-			else if typeof value isnt 'object'
-				@_buffer.push('<', key, '>', value, '</', key, '>')
-
-			# For any composite type
-
-			else
-				@_buffer.push('<', key)
-				@_buffer.push(' ', attrKey, '="', attrValue, '"') for attrKey, attrValue1 of value.$
-				@_buffer.push('>')
-
-				# HANDLE cases where value is $text: null or value is $section: null
-
-				@_processObject(value)
-
-				@_buffer.push('</', key, '>')
-
-		# Key represents special case
-
-		else switch key
-			when '$text' then @_buffer.push(value)
-			when '$section' then @_buffer.push('<![CDATA[', value, ']]>')
-			when '$comment' then @_buffer.push('<!--', value, '-->')
-			else throw new Error('Unknown special key: ' + key)
+		else
+			@_processSpecial(key, value)
 
 		@
 
@@ -85,15 +102,11 @@ class Serializer
 	#
 
 	process: (data) ->
-		@_buffer = []
-
-		# Нужна проверка на наличие только одного корневого элемента
-		# и, возможно, элемента $xml с типом значения не равным массиву
-		# Т.е. data - это представление документа
+		@_writer = new Writer()
 
 		@_processObject(data)
 
-		@_buffer.join('')
+		@_writer.result()
 
 # Exported objects
 
