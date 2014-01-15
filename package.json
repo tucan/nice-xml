@@ -1,6 +1,6 @@
 {
 	"name": "nice-xml",
-	"version": "0.1.0-alpha",
+	"version": "0.1.0-beta",
 	"description": "XML to JS native objects bidirectional converver",
 	"keywords": ["xml", "converter", "parser"],
 	"main": "./lib/index",
@@ -12,6 +12,9 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/tucan/nice-xml.git"
+	},
+	"dependencies": {
+		"sax": "0.x"
 	},
 	"devDependencies": {
 		"coffee-script": "1.x"
