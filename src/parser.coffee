@@ -29,6 +29,8 @@ class Parser
 		else
 			current = null
 
+		@_current = {} if @_current is null
+
 		@_stack.push([options.name, @_current])
 		@_current = current
 
