@@ -1,17 +1,23 @@
 {
-	"test": 100,
-	"hello": 1,
-	"aa": "12345",
-	"test1": 100,
-	"hello1": 1,
-	"aa1": "12345",
-	"test2": 100,
-	"hello2": 1,
-	"aa2": "12345",
-	"test3": 100,
-	"hello3": 1,
-	"aa3": "12345",
-	"test4": 100,
-	"hello4": 1,
-	"aa4": "12345"
+	"root": {
+		"test": "100",
+		"hello": "3",
+		"aa": "12345",
+		"$": { "id": 12345, "name": "my" },
+		"$comment": ["Hello", "Yes"],
+		"test1": "100",
+		"hello1": "1",
+		"$text": ["My text", "one more"],
+		"aa1": "12345",
+		"test2": "100",
+		"hello2": "1",
+		"aa2": "12345",
+		"test3": "100",
+		"hello3": "1",
+		"aa3": "12345",
+		"test4": "100",
+		"yes": "null",
+		"hello4": "true",
+		"aa4": "12345"
+	}
 }
