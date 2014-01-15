@@ -1,14 +1,22 @@
-# Classes for dealing with XML format
-#
-# December, 2012 year
-#
-# Author - Vladimir Andreev
-#
-# E-Mail: volodya@netfolder.ru
+# Copyright Vladimir Andreev
+
+# Required modules
+
+Parser = require('./parser')
+Serializer = require('./serializer')
+
+# Parses given string to native data types
+
+parse = (text, reviver) ->
+	new Parser(reviver).process(text)
+
+# Serializes provided data into string
+
+stringify = (data, replacer, space) ->
+	new Serializer(replacer, space).process(data)
 
 # Exported objects
 
-exports.Serializer = require('./serializer')
-exports.Standard = require('./standard')
-exports.XML = require('./xml')
-exports.Loader = require('./loader')
+module.exports =
+	parse: parse
+	stringify: stringify
