@@ -29,7 +29,10 @@ class Parser
 		else
 			current = null
 
-		@_current = {} if @_current is null
+		if @_current is null
+			@_current = {}
+		else if typeof @_current is 'string'
+			@_current = $text: @_current
 
 		@_stack.push([options.name, @_current])
 		@_current = current
@@ -62,8 +65,10 @@ class Parser
 		else
 			unless @_current.$text?
 				@_current.$text = value
+			else unless Array.isArray(@_current.$text)
+				@_current.$text = [@_current.$text, value]
 			else
-				@_current.$text += value
+				@_current.$text.push(value)
 
 		undefined
 
