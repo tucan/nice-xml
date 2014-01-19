@@ -73,7 +73,7 @@ class Serializer
 	_processNonArray: (key, value) ->
 		# Try to unwrap object
 
-		value = value.valueOf() if value isnt null and typeof value is 'object'
+		value = value.valueOf() if value isnt null and typeof value is 'object'	# BUG: not every object can have this method
 
 		# Key corresponds to element
 

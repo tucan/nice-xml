@@ -8,7 +8,7 @@ Serializer = require('./serializer')
 # Parses given string to native data types
 
 parse = (text, reviver) ->
-	new Parser(reviver).process(text)
+	new Parser(empty: false).process(text)
 
 # Serializes provided data into string
 

@@ -9,7 +9,9 @@ SAX = require('sax')
 class Parser
 	#
 
-	constructor: () ->
+	constructor: (options) ->
+		@_empty = options.empty
+
 		@_tree = null
 		@_stack = null
 		@_current = null
@@ -58,6 +60,15 @@ class Parser
 	#
 
 	_onText: (value) =>
+		isGarbage = true
+
+		for char in value
+			unless char in ['\n', '\t', ' ']
+				isGarbage = false
+				break
+
+		return if isGarbage
+
 		if @_current is null
 			@_current = value
 		else if typeof @_current is 'string'
